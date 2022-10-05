@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\RolesController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -30,9 +31,10 @@ Route::post('login',[UserController::class,'loginPost']);
 
 
 Route::middleware('auth')->group(function (){
-        Route::middleware('role:admin,user')->group(function () {
+        Route::middleware('role:admin')->group(function () {
             Route::group(['prefix' => '/admin', 'as' => 'admin.'], function () {
                 Route::resource('/users', AdminController::class);
+                Route::resource('/roles', RolesController::class);
             });
         });
 });

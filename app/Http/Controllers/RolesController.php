@@ -3,18 +3,19 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\RegistrationValidation;
+use App\Http\Requests\RoleValidator;
 use App\Http\Requests\UserUpdateValidator;
-use App\Models\User;
+use App\Models\Role;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
-class AdminController extends Controller
+class RolesController extends Controller
 {
     public function index()
     {
-        $users= User::paginate(15);
+        $roles= Role::paginate(15);
 
-        return view('admin.users.index',compact('users'));
+        return view('admin.roles.index',compact('roles'));
     }
 
     /**
@@ -24,7 +25,7 @@ class AdminController extends Controller
      */
     public function create()
     {
-        return view('admin.users.create');
+        return view('admin.roles.create');
     }
 
     /**
@@ -33,15 +34,10 @@ class AdminController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\Response
      */
-    public function store(RegistrationValidation $request)
+    public function store(RoleValidator $request)
     {
         $requests = $request->validated();
-        unset($requests['photo']);
-        $photo = $request->file('photo')->store('public');
-        $requests['role_id']=$request->role;
-        $requests['password']=Hash::make($requests['password']);
-        $requests['photo']=explode('/',$photo)[1];
-         User::create($requests);
+        Role::create($requests);
         return back()->with(['successRegister'=>true]);
     }
 
@@ -51,9 +47,9 @@ class AdminController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(User $user)
+    public function show(Role $role)
     {
-        return view('admin.users.show', compact('user'));
+        return view('admin.roles.show', compact('role'));
     }
 
     /**
@@ -62,10 +58,10 @@ class AdminController extends Controller
      * @param  int  $id
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
      */
-    public function edit(Request $request,User $user)
+    public function edit(Request $request,Role $role)
     {
-        $request->session()->flashInput($user->toArray());
-        return view('admin.users.edit', compact('user'));
+        $request->session()->flashInput($role->toArray());
+        return view('admin.roles.edit', compact('role'));
     }
 
     /**
@@ -75,11 +71,11 @@ class AdminController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\Response
      */
-    public function update(UserUpdateValidator $request, User $user)
+    public function update(RoleValidator $request, Role $role)
     {
         $validate = $request->validated();
-        $user->role_id=$request->role;
-        $user->update($validate);
+        $role->update($validate);
+
         return back()->with(['success'=>true]);
     }
 
@@ -89,9 +85,9 @@ class AdminController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\Response
      */
-    public function destroy(User $user)
+    public function destroy(Role $role)
     {
-        $user->delete();
-        return redirect()->route('admin.users.index')->with(['successDelete'=>true]);
+        $role->delete();
+        return redirect()->route('admin.roles.index')->with(['successDelete'=>true]);
     }
 }

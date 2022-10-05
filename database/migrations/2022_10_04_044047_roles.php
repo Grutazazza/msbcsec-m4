@@ -16,7 +16,10 @@ return new class extends Migration
         Schema::create('roles', function (Blueprint $table) {
             $table->id();
             $table->string('role');
+            $table->string('roleName');
+            $table->timestamps();
         });
+        \Illuminate\Support\Facades\DB::table('roles')->insert(['id'=>0,'role'=>'admin','roleName'=>'Администратор']);
     }
 
     /**
