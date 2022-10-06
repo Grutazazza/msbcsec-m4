@@ -96,7 +96,7 @@
                         </div>
                     </div>
 
-                    <button type="submit" class="btn btn-primary">Sign in</button>
+                    <button type="submit" class="btn btn-primary">Создатьы</button>
                 </form>
             </div>
             <div class="col"></div>
