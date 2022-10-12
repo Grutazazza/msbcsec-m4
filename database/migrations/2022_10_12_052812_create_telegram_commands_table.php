@@ -13,14 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('telegram_commands', function (Blueprint $table) {
             $table->id();
-            $table->string('fullname');
-            $table->string('email')->unique();
-            $table->string('photo');
-            $table->string('password');
-            $table->dateTime('dateofbirth');
-            $table->foreignIdFor(\App\Models\Role::class)->default('1')->constrained()->cascadeOnDelete();
+            $table->string('command');
+            $table->string('context');
             $table->timestamps();
         });
     }
@@ -32,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('telegram_commands');
     }
 };

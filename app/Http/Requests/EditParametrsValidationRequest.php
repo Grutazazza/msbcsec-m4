@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdatePostRequest extends FormRequest
+class EditParametrsValidationRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,10 +24,8 @@ class UpdatePostRequest extends FormRequest
     public function rules()
     {
         return [
-            'name'=>'required',
-            'description'=>'required',
-            'smalldesc'=>'required',
-            'tags'=>'required'
+            'name'=>'required|unique:telegram_settings,name.'.$this->route('telegramSetting'),
+            'val'=>'required'
         ];
     }
 }

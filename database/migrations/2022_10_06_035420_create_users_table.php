@@ -8,21 +8,17 @@ return new class extends Migration
 {
     /**
      * Run the migrations.
-     *
+     *Имеет внешний ключ для пользователей
+     * создаётся третьей
      * @return void
      */
     public function up()
     {
-        Schema::create('posts', function (Blueprint $table) {
+        Schema::create('users', function (Blueprint $table) {
             $table->id();
+            $table->string('login',32)->unique();
             $table->string('name');
-            $table->dateTime('dateofcreation');
-            $table->dateTime('dateofredact');
-            $table->string('description');
-            $table->string('smalldesc');
-            $table->string('tags');
-            $table->string('photo');
-            $table->foreignIdFor(\App\Models\User::class)->constrained()->cascadeOnDelete();
+            $table->string('password');
             $table->timestamps();
         });
     }
@@ -34,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('posts');
+        Schema::dropIfExists('users');
     }
 };

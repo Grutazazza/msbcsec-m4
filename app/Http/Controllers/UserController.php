@@ -11,10 +11,20 @@ use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
+    /**
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     * Переход на страницу регистрации
+     */
     public function register()
     {
         return view('users.register');
     }
+
+    /**
+     * @param RegistrationValidation $request
+     * @return \Illuminate\Http\RedirectResponse
+     * Функция регистрации(создание нового пользователя)
+     */
     public function registerPost(RegistrationValidation $request)
     {
         $requests = $request->validated();
@@ -26,36 +36,49 @@ class UserController extends Controller
         User::create($requests);
         return redirect()->route('login');
     }
+
+    /**
+     * Шаблон авторизации
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
     public function login()
     {
-        return view('users.login');
-
+        return view('user.login');
     }
+
+    /**
+     * POST запрос на обработку шаблона login
+     * @param LoginValidation $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function loginPost(LoginValidation $request)
     {
-        if(Auth::attempt($request->validated())){
+        $valid = $request->validated();
+        if(Auth::attempt($valid)){
             $request->session()->regenerate();
-            return back()->with(['success'=>'true']);
+            return redirect()->route('main');
         }
-        return back()->withErrors(['auth'=>'Логин или пароль не верный!']);
+        return back()->with(['auth'=>false]);
     }
 
+    /**
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     * Переход на страницу кабинета
+     */
     public function cabinet()
     {
         return view('users.cabinet');
     }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     * Выход из пользователя
+     */
     public function logout(Request $request)
     {
         Auth::logout();
         $request->session()->regenerate();
         return redirect()->route('welcome');
-    }
-    public function users()
-    {
-        return view('welcome');
-
-        $users = User::select('*');
-        $usersItems = $users->get();
     }
 }

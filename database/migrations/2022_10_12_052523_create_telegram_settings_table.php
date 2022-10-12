@@ -13,13 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('roles', function (Blueprint $table) {
+        Schema::create('telegram_settings', function (Blueprint $table) {
             $table->id();
-            $table->string('role');
-            $table->string('roleName');
+            $table->string('name')->comment('Названние колонки настроек');
+            $table->string('val')->comment('Значения настроек');
             $table->timestamps();
         });
-        \Illuminate\Support\Facades\DB::table('roles')->insert(['id'=>0,'role'=>'admin','roleName'=>'Администратор']);
     }
 
     /**
@@ -29,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('telegram_settings');
     }
 };

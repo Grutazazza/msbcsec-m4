@@ -18,7 +18,7 @@ class RegistrationValidation extends FormRequest
 
     /**
      * Get the validation rules that apply to the request.
-     *
+     * Валидность регистрации
      * @return array<string, mixed>
      */
     public function rules()

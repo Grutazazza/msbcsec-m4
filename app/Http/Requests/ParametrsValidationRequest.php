@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class PostValidation extends FormRequest
+class ParametrsValidationRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,14 +24,8 @@ class PostValidation extends FormRequest
     public function rules()
     {
         return [
-            'name'=>'required',
-            'dateofcreation'=>'required',
-            'dateofredact'=>'required',
-            'description'=>'required',
-            'smalldesc'=>'required',
-            'tags'=>'required',
-            'photo'=>'required',
-            'user_id'=>'required'
+            'name'=>'required|unique:telegram_settings',
+            'val'=>'required'
         ];
     }
 }
